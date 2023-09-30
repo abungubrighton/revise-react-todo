@@ -1,5 +1,8 @@
 import './App.css';
 import {useState} from 'react';
+import{ Button,FormControl,Input, InputLabel} from '@mui/material';
+import Todo from './Todo';
+
 function App() {
   const [todos, setTodos] = useState(["Take The Dogs Out","Play football"]);
   const [input, setInput] = useState("");
@@ -14,15 +17,17 @@ function App() {
   return (
     <div className="App">
       <h1>Brighton's TODO APP</h1>
-      <form>
-        <input type="text" value={input} onChange={event=>setInput(event.target.value)} />
-        <button onClick={addTodo}>Add Todo</button>
+      <form onSubmit={addTodo}>
+        <FormControl>
+          <InputLabel>Type in your task</InputLabel>
+          <Input type="text" value={input} onChange={event=>setInput(event.target.value)}/>
+        </FormControl>
+        <Button type="submit" disabled={!input} onClick={addTodo} variant="contained">Add Todo</Button>
       </form>
 
       <ul>
         {todos.map((todo)=>(
-          <li key={todo}>{todo}</li>
-
+          <Todo key={todo} todo={todo}/>
         ))}
         
       </ul>
