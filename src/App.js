@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 import{ Button,FormControl,Input, InputLabel} from '@mui/material';
 import Todo from './Todo';
 import {db}   from './firebase';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { addDoc, collection, onSnapshot } from 'firebase/firestore';
 
 
 function App() {
@@ -13,7 +13,10 @@ function App() {
   const addTodo=(event) => {
     event.preventDefault();
     console.log("addTodo");
-    setTodos([...todos,input]);
+    //setTodos([...todos,input]); INSTEAD NOW POST TO DB
+    addDoc(collection(db, 'Todos'), {
+      todo: input,
+    });
     // clear input
     setInput("");
   }
