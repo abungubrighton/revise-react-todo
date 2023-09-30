@@ -1,10 +1,13 @@
 import React from 'react'
-
+import{List,ListItem,ListItemText} from '@mui/material';
 const Todo = ({todo}) => {
   return (
-    <div>
-        <li key={todo}>{todo}</li>
-    </div>
+    <List>
+        <ListItem>
+            <ListItemText primary="Todo" secondary={todo}/>
+        </ListItem>
+       
+    </List>
   )
 }
 
