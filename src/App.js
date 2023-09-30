@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 import{ Button,FormControl,Input, InputLabel} from '@mui/material';
 import Todo from './Todo';
 import {db}   from './firebase';
-import { addDoc, collection, onSnapshot } from 'firebase/firestore';
+import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp } from 'firebase/firestore';
 
 
 function App() {
@@ -16,19 +16,22 @@ function App() {
     //setTodos([...todos,input]); INSTEAD NOW POST TO DB
     addDoc(collection(db, 'Todos'), {
       todo: input,
+      timestamp:  serverTimestamp()
     });
     // clear input
     setInput("");
   }
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, 'Todos'), (snapshot) => {
+    // Create a query to order the todos by timestamp in descending order
+    const q = query(collection(db, 'Todos'), orderBy('timestamp', 'desc'));
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
       setTodos(snapshot.docs.map((doc) => doc.data().todo));
     });
 
     return () => {
       // Unsubscribe from the snapshot listener when the component unmounts
-      // to avoid memory leaks.
       unsubscribe();
     };
   }, [input]);
