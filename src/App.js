@@ -27,7 +27,7 @@ function App() {
     const q = query(collection(db, 'Todos'), orderBy('timestamp', 'desc'));
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      setTodos(snapshot.docs.map((doc) => doc.data().todo));
+      setTodos(snapshot.docs.map((doc) => ({id:doc.id,todo:doc.data().todo})));
     });
 
     return () => {
@@ -49,7 +49,7 @@ function App() {
 
       <ul>
         {todos.map((todo)=>(
-          <Todo key={todo} todo={todo}/>
+          <Todo key={todo.id} todo={todo}/>
         ))}
         
       </ul>
